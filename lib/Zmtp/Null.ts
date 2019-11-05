@@ -22,7 +22,7 @@
     <https://www.gnu.org/licenses/>.
 */
 
-import { encoder } from 'https://deno.land/std/strings/encode.ts';
+import { encoder } from '../../deps.ts';
 import Zmtp from '../Zmtp.ts';
 import Command from './Command.ts';
 import {

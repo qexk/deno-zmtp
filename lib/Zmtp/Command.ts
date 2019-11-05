@@ -23,8 +23,7 @@
 */
 
 import Zerializable from './Zerializable.ts';
-import { encoder } from 'https://deno.land/std/strings/encode.ts';
-import { decode } from 'https://deno.land/std/strings/decode.ts';
+import { encoder, decoder } from '../../deps.ts';
 
 export default class Command implements Zerializable {
   private static readonly MAX_NAME_LEN = 0xFF;
@@ -99,7 +98,7 @@ export default class Command implements Zerializable {
     const nameLength = buf[0];
     const nameBuf = buf.subarray(0, nameLength);
     await reader.read(nameBuf);
-    this.name = decode(nameBuf);
+    this.name = decoder.decode(nameBuf);
     return BigInt(1 + nameLength);
   }
 
@@ -114,7 +113,7 @@ export default class Command implements Zerializable {
       const valueBuf = new Uint8Array(lenView.getUint32(0, false));
       if (valueBuf.byteLength > 0)
         await reader.read(valueBuf);
-      this.props.set(decode(nameBuf), decode(valueBuf));
+      this.props.set(decoder.decode(nameBuf), decoder.decode(valueBuf));
       bread += 1 + nameBuf.byteLength + 4 + valueBuf.byteLength;
     }
   }
