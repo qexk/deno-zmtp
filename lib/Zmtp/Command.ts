@@ -23,12 +23,12 @@
 */
 
 import Zerializable from './Zerializable.ts';
+import { MAX_SHORT_BODY_LEN } from './detail.ts';
 import { encoder, decoder } from '../../deps.ts';
 
 export default class Command implements Zerializable {
   private static readonly MAX_NAME_LEN = 0xFF;
   private static readonly SHORT_TAG = 0x04;
-  private static readonly MAX_SHORT_BODY_LEN = 0xFF;
   private static readonly LONG_TAG = 0x06;
 
   constructor(
@@ -77,7 +77,7 @@ export default class Command implements Zerializable {
     const bodyLength = name.byteLength + props.byteLength;
     const buf = new Uint8Array(9 + bodyLength);
     let prefix: number;
-    if (bodyLength <= Command.MAX_SHORT_BODY_LEN) {
+    if (bodyLength <= MAX_SHORT_BODY_LEN) {
       prefix = 2;
       buf[0] = Command.SHORT_TAG;
       buf[1] = bodyLength;

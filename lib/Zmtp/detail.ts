@@ -27,6 +27,7 @@ export const MINOR = 0;
 export const AS_CLIENT = 0;
 export const GREET_LENGTH = 64;
 export const PARTIAL_LENGTH = 11;
+export const MAX_SHORT_BODY_LEN = 0xFF;
 export const PARTIAL_GREET = new Uint8Array([
 // signature   padding(8)        end   major version
 //  v   /--------------------\    v     v
