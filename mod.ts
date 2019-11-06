@@ -25,6 +25,7 @@
 import Zmtp_ from './lib/Zmtp.ts';
 import Zerializable_ from './lib/Zmtp/Zerializable.ts';
 import Command_ from './lib/Zmtp/Command.ts';
+import Frame_ from './lib/Zmtp/Frame.ts';
 import Null_ from './lib/Zmtp/Null.ts';
 import * as Detail from './lib/Zmtp/detail.ts';
 
@@ -36,6 +37,7 @@ namespace Zmtp {
 
   export type Zerializable = Zerializable_;
   export const Command = Command_;
+  export const Frame = Frame_;
   export const Null = Null_;
 
   export async function build<Kind extends Zmtp>(
