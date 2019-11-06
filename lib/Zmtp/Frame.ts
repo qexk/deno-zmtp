@@ -22,9 +22,9 @@
     <https://www.gnu.org/licenses/>.
 */
 
-import { encoder } from '../../deps.ts';
-import { MAX_SHORT_BODY_LEN } from './detail.ts';
-import Zerializable from './Zerializable.ts';
+import { encoder } from "../../deps.ts";
+import { MAX_SHORT_BODY_LEN } from "./detail.ts";
+import Zerializable from "./Zerializable.ts";
 
 export interface FrameOptions {
   body?: Uint8Array | string;
@@ -39,8 +39,7 @@ export default class Frame implements Zerializable {
   public more: boolean;
 
   constructor({ body = new Uint8Array(), more = false }: FrameOptions = {}) {
-    if (typeof body === 'string') this.body = encoder.encode(body);
-    else this.body = body;
+    this.body = typeof body === "string" ? encoder.encode(body) : body;
     this.more = more;
   }
 

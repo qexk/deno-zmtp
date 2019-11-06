@@ -22,12 +22,14 @@
     <https://www.gnu.org/licenses/>.
 */
 
-import Zmtp_ from './lib/Zmtp.ts';
-import Zerializable_ from './lib/Zmtp/Zerializable.ts';
-import Command_ from './lib/Zmtp/Command.ts';
-import Frame_ from './lib/Zmtp/Frame.ts';
-import Null_ from './lib/Zmtp/Null.ts';
-import * as Detail from './lib/Zmtp/detail.ts';
+import Zmtp_ from "./lib/Zmtp.ts";
+import Null_ from "./lib/Zmtp/Null.ts";
+
+import Zerializable_ from "./lib/Zmtp/Zerializable.ts";
+import Command_ from "./lib/Zmtp/Command.ts";
+import Frame_ from "./lib/Zmtp/Frame.ts";
+
+import * as Detail from "./lib/Zmtp/detail.ts";
 
 type Zmtp = Zmtp_;
 
@@ -42,7 +44,7 @@ namespace Zmtp {
 
   export async function build<Kind extends Zmtp>(
     ZmtpKind: new (sock: Deno.Conn) => Kind,
-    sock: Deno.Conn,
+    sock: Deno.Conn
   ) {
     const k: Kind = new ZmtpKind(sock);
     await k.greet();

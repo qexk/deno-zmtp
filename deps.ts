@@ -22,5 +22,5 @@
     <https://www.gnu.org/licenses/>.
 */
 
-export { encoder } from 'https://deno.land/std@v0.23.0/strings/encode.ts';
-export { decoder } from 'https://deno.land/std@v0.23.0/strings/decode.ts';
+export { decoder } from "https://deno.land/std@v0.23.0/strings/decode.ts";
+export { encoder } from "https://deno.land/std@v0.23.0/strings/encode.ts";

@@ -22,31 +22,32 @@
     <https://www.gnu.org/licenses/>.
 */
 
-import { encoder } from '../../deps.ts';
-import Zmtp from '../Zmtp.ts';
-import Command from './Command.ts';
+import { encoder } from "../../deps.ts";
+import Zmtp from "../Zmtp.ts";
+import Command from "./Command.ts";
 import {
-  GREET_LENGTH,
-  PARTIAL_GREET,
-  PARTIAL_LENGTH,
-  MINOR,
   AS_CLIENT,
-} from './detail.ts';
+  GREET_LENGTH,
+  MINOR,
+  PARTIAL_GREET,
+  PARTIAL_LENGTH
+} from "./detail.ts";
 
 export default class Null extends Zmtp {
   static GREET = (() => {
     const buf = new Uint8Array(GREET_LENGTH);
     buf.set(PARTIAL_GREET, 0);
     buf[11] = MINOR;
-    encoder.encodeInto('NULL', buf.subarray(12));
+    encoder.encodeInto("NULL", buf.subarray(12));
     buf[32] = AS_CLIENT;
     return buf;
   })();
 
-  constructor(
-    public readonly sock: Deno.Conn
-  ) {
+  public readonly sock: Deno.Conn;
+
+  constructor(sock: Deno.Conn) {
     super();
+    this.sock = sock;
   }
 
   async greet() {
@@ -58,14 +59,12 @@ export default class Null extends Zmtp {
   }
 
   async handshake() {
-    const ready = new Command('READY', new Map([
-      ['Socket-Type', 'REQ'],
-      ['Identity', ''],
-    ]));
-    console.log('Sending', ready);
+    const ready = new Command(
+      "READY",
+      new Map([["Socket-Type", "REQ"], ["Identity", ""]])
+    );
     await this.sock.write(ready.serialize());
     const recv = new Command();
     await recv.deserializeFrom(this.sock);
-    console.log('Received', recv);
   }
 }

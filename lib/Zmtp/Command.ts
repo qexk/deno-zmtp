@@ -22,18 +22,18 @@
     <https://www.gnu.org/licenses/>.
 */
 
-import Zerializable from './Zerializable.ts';
-import { MAX_SHORT_BODY_LEN } from './detail.ts';
-import { encoder, decoder } from '../../deps.ts';
+import { decoder, encoder } from "../../deps.ts";
+import { MAX_SHORT_BODY_LEN } from "./detail.ts";
+import Zerializable from "./Zerializable.ts";
 
 export default class Command implements Zerializable {
-  private static readonly MAX_NAME_LEN = 0xFF;
+  private static readonly MAX_NAME_LEN = 0xff;
   private static readonly SHORT_TAG = 0x04;
   private static readonly LONG_TAG = 0x06;
 
   constructor(
-    public name: string = '',
-    public readonly props = new Map<string, string>(),
+    public name: string = "",
+    public readonly props = new Map<string, string>()
   ) {}
 
   private serializeName(): Uint8Array {
@@ -50,11 +50,12 @@ export default class Command implements Zerializable {
   private serializeProps(): Uint8Array {
     let size = 0;
     // Create a buffer big enough to contain all the data.
-    for (let [k, v] of this.props)
-    //   key prefix       utf max         value
-    //        |      key     | value prefix | utf max
-    //        v       v      v   v          v   v
+    for (let [k, v] of this.props) {
+      //   key prefix       utf max         value
+      //        |      key     | value prefix | utf max
+      //        v       v      v   v          v   v
       size += 1 + k.length * 3 + 4 + v.length * 3;
+    }
     const buf = new ArrayBuffer(size);
     const view = new DataView(buf);
     let ibuf = 0;
@@ -111,8 +112,9 @@ export default class Command implements Zerializable {
       await reader.read(nameBuf);
       await reader.read(lenBuf);
       const valueBuf = new Uint8Array(lenView.getUint32(0, false));
-      if (valueBuf.byteLength > 0)
+      if (valueBuf.byteLength > 0) {
         await reader.read(valueBuf);
+      }
       this.props.set(decoder.decode(nameBuf), decoder.decode(valueBuf));
       bread += 1 + nameBuf.byteLength + 4 + valueBuf.byteLength;
     }
