@@ -81,6 +81,8 @@ export default class Frame implements Zerializable {
       default:
         return null;
     }
-    reader.read(this.body);
+    if (this.body.byteLength > 0) {
+      await reader.read(this.body);
+    }
   }
 }
