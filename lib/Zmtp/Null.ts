@@ -32,6 +32,8 @@ import {
   PARTIAL_GREET,
   PARTIAL_LENGTH
 } from "./detail.ts";
+import Frame from "./Frame.ts";
+import Zerializable from "./Zerializable.ts";
 
 export default class Null extends Zmtp {
   static GREET = (() => {
@@ -66,5 +68,23 @@ export default class Null extends Zmtp {
     await this.sock.write(ready.serialize());
     const recv = new Command();
     await recv.deserializeFrom(this.sock);
+  }
+
+  async send(data: Zerializable) {
+    const delimiter = new Frame({ more: true }).serialize();
+    const payload = data.serialize();
+    await this.sock.write(delimiter);
+    await this.sock.write(payload);
+  }
+
+  async recv() {
+    const frames: Frame[] = [];
+    let next: Frame;
+    do {
+      next = new Frame();
+      await next.deserializeFrom(this.sock);
+      frames.push(next);
+    } while (next.more);
+    return frames.slice(1);
   }
 }

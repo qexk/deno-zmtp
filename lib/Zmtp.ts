@@ -22,7 +22,12 @@
     <https://www.gnu.org/licenses/>.
 */
 
+import Frame from "./Zmtp/Frame.ts";
+import Zerializable from "./Zmtp/Zerializable.ts";
+
 export default abstract class Zmtp {
   public abstract greet(): Promise<void>;
   public abstract handshake(): Promise<void>;
+  public abstract send(data: Zerializable): Promise<void>;
+  public abstract recv(): Promise<Frame[]>;
 }
